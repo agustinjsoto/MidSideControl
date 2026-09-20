@@ -27,3 +27,9 @@ jobs:
                      -scheme "MidSideControl - VST3" \
                      -configuration Release \
                      build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MidSideControl-macOS-VST3
+          path: Builds/MacOSX/build/Release/*.vst3
