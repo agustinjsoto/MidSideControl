@@ -1,0 +1,29 @@
+name: Build macOS Plugin
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest
+
+      - name: Build VST3 and AU targets
+        run: |
+          xcodebuild -project "Builds/MacOSX/MidSideControl.xcodeproj" \
+                     -scheme "MidSideControl - VST3" \
+                     -configuration Release \
+                     build
