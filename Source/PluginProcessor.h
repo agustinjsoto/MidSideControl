@@ -47,10 +47,19 @@ public:
     static constexpr auto midGainId      = "midGain";
     static constexpr auto sideGainId     = "sideGain";
     static constexpr auto outputVolumeId = "outputVolume";
+    static constexpr auto panId          = "pan";
+    static constexpr auto panLawId       = "panLaw";
 
     // Valor de dB que tratamos como "-inf" (silencio total). Tiene que
     // coincidir con el mínimo que le pongas a cada NormalisableRange.
     static constexpr float minusInfinityDb = -60.0f;
+
+    // --- Pan law ---
+    // Cuántos dB baja cada canal cuando el pan está en el centro (respecto
+    // de cuando está todo hacia un lado). El índice coincide con el orden de
+    // las opciones del parámetro "panLaw": +0.0, -2.5, -3.0, -4.5, -6.0.
+    // El índice 0 (+0.0) es el valor por defecto.
+    static constexpr std::array<float, 5> panLawCentreDb { 0.0f, -2.5f, -3.0f, -4.5f, -6.0f };
 
     //==============================================================================
     // --- Datos para el goniómetro (vectorscopio) ---
@@ -79,6 +88,8 @@ private:
     std::atomic<float>* midGainParam      = nullptr;
     std::atomic<float>* sideGainParam     = nullptr;
     std::atomic<float>* outputVolumeParam = nullptr;
+    std::atomic<float>* panParam          = nullptr;
+    std::atomic<float>* panLawParam       = nullptr; // índice de la opción elegida (0..4)
 
     std::array<float, goniometerBufferSize> goniometerMidBuffer {};
     std::array<float, goniometerBufferSize> goniometerSideBuffer {};

@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="JehWl9" name="MidSideControl" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="ASaudio"
-              pluginVST3Category="Tools" pluginManufacturerCode="ASau">
+              pluginVST3Category="Tools" pluginManufacturerCode="ASau" pluginName="MidSideControl">
   <MAINGROUP id="hq1xDV" name="MidSideControl">
     <GROUP id="{DC6EBBFC-23B9-E544-BE1C-88CFFF3D7F7C}" name="Source">
       <FILE id="PJh0z8" name="GoniometerComponent.cpp" compile="1" resource="0"
@@ -39,8 +39,9 @@
   <EXPORTFORMATS>
     <VS2026 targetFolder="Builds/VisualStudio2026">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="S_MidSideControl"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="S_MidSideControl"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="MidSideControl" enablePluginBinaryCopyStep="1"
+                       vst3BinaryLocation_x64="C:\Users\Soto\Documents\Programacion\Reaper Debug\VST3"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="MidSideControl"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
