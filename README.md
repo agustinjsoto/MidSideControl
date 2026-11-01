@@ -1,6 +1,6 @@
 # MidSideControl v2 
 
-Plugin VST3 de procesamiento Mid/Side para mezcla y masterización.
+Plugin VST3 de procesamiento Mid/Side.
 
 ## Documentación y Manual de Usuario
 Puedes consultar el manual de uso completo en formato PDF:
