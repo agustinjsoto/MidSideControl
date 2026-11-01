@@ -14,6 +14,7 @@ MidSideVolumeAudioProcessor::MidSideVolumeAudioProcessor()
     outputVolumeParam = apvts.getRawParameterValue(outputVolumeId);
     panParam = apvts.getRawParameterValue(panId);
     panLawParam = apvts.getRawParameterValue(panLawId);
+    monoFreqParam = apvts.getRawParameterValue(monoFreqId);
 }
 
 MidSideVolumeAudioProcessor::~MidSideVolumeAudioProcessor() = default;
@@ -104,6 +105,49 @@ juce::AudioProcessorValueTreeState::ParameterLayout MidSideVolumeAudioProcessor:
         juce::StringArray{ "+0.0 dB", "-2.5 dB", "-3.0 dB", "-4.5 dB", "-6.0 dB" },
         0)); // por defecto: +0.0
 
+    // --- Mono Maker: frecuencia de corte (por debajo de esto, todo mono) ---
+    // El mínimo del knob (10 Hz) significa "Off".
+    // Escala logarítmica real (cada década ocupa el mismo recorrido del knob).
+    // Ojo: setSkewForCentre() de JUCE es una curva de potencia, no un log; con
+    // 10 Hz a 10 kHz dejaba ~10 % del recorrido "muerto" pegado al Off.
+    // Paso de 0.1 Hz: con 1 Hz, de 10 a 11 era un salto del 10 % y el knob
+    // se sentía "escalonado" abajo de todo.
+    juce::NormalisableRange<float> monoFreqRange(
+        monoFreqMin, monoFreqMax,
+        [](float start, float end, float proportion) { return start * std::pow(end / start, proportion); },
+        [](float start, float end, float value)      { return std::log(juce::jmax(value, start) / start) / std::log(end / start); },
+        [](float start, float end, float value)      { return juce::jlimit(start, end, std::round(value * 10.0f) / 10.0f); });
+
+    auto monoFreqTextFromValue = [](float value, int)
+        {
+            if (value <= monoOffThreshold)
+                return juce::String("Off");
+            if (value >= 1000.0f)
+                return juce::String(value / 1000.0f, 2) + " kHz";
+            if (value < 100.0f)
+                return juce::String(value, 1) + " Hz";
+            return juce::String((int)std::round(value)) + " Hz";
+        };
+    auto monoFreqValueFromText = [](const juce::String& text)
+        {
+            const auto t = text.trim().toLowerCase();
+            if (t.contains("off"))
+                return monoFreqMin;
+            float v = t.getFloatValue();
+            if (t.contains("k"))
+                v *= 1000.0f; // "1.5k" / "1.5 kHz"
+            return juce::jlimit(monoFreqMin, monoFreqMax, v);
+        };
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        juce::ParameterID{ monoFreqId, 1 },
+        "Mono Maker Freq",
+        monoFreqRange,
+        monoFreqDefault,
+        juce::AudioParameterFloatAttributes()
+        .withStringFromValueFunction(monoFreqTextFromValue)
+        .withValueFromStringFunction(monoFreqValueFromText)));
+
     return layout;
 }
 
@@ -116,9 +160,67 @@ void MidSideVolumeAudioProcessor::prepareToPlay(double sampleRate, int)
     peakAttackCoeff = (float)std::exp(-1.0 / (0.003 * sampleRate));
     peakReleaseCoeff = (float)std::exp(-1.0 / (1.000 * sampleRate));
     correlationSmoothingCoeff = (float)(1.0 / (sampleRate * 0.6));
+
+    // --- Mono Maker ---
+    currentSampleRate = sampleRate;
+
+    const float startFreq = juce::jlimit(monoFreqMin, monoFreqMax, monoFreqParam->load());
+    monoFreqSmoothed.reset(sampleRate, 0.020);
+    monoFreqSmoothed.setCurrentAndTargetValue(startFreq);
+
+    monoAmountSmoothed.reset(sampleRate, 0.010);
+    monoAmountSmoothed.setCurrentAndTargetValue(startFreq > monoOffThreshold ? 1.0f : 0.0f);
+
+    resetMonoMaker();
+    updateMonoMakerCoefficients(startFreq);
 }
 
 void MidSideVolumeAudioProcessor::releaseResources() {}
+
+//==============================================================================
+void MidSideVolumeAudioProcessor::resetMonoMaker()
+{
+    for (int ch = 0; ch < 2; ++ch)
+        for (int stage = 0; stage < 2; ++stage)
+        {
+            monoLowFilter[ch][stage].reset();
+            monoHighFilter[ch][stage].reset();
+        }
+}
+
+// Mismas cuentas que el @block del JSFX: biquads Butterworth (Q = 1/sqrt2),
+// low-pass y high-pass comparten a1/a2 y el 1/a0.
+void MidSideVolumeAudioProcessor::updateMonoMakerCoefficients(double cutoffHz)
+{
+    // Protección de Nyquist (igual que el JSFX: 0.45 * sample rate).
+    const double fc = juce::jmin(cutoffHz, currentSampleRate * 0.45);
+
+    const double w0 = 2.0 * juce::MathConstants<double>::pi * fc / currentSampleRate;
+    const double c = std::cos(w0);
+    const double s = std::sin(w0);
+
+    const double alpha = s / (2.0 * monoMakerQ);
+    const double a0i = 1.0 / (1.0 + alpha);
+
+    const double a1 = -2.0 * c * a0i;
+    const double a2 = (1.0 - alpha) * a0i;
+
+    // Low-pass
+    monoLowCoeffs.b0 = (1.0 - c) * 0.5 * a0i;
+    monoLowCoeffs.b1 = (1.0 - c) * a0i;
+    monoLowCoeffs.b2 = monoLowCoeffs.b0;
+    monoLowCoeffs.a1 = a1;
+    monoLowCoeffs.a2 = a2;
+
+    // High-pass
+    monoHighCoeffs.b0 = (1.0 + c) * 0.5 * a0i;
+    monoHighCoeffs.b1 = -(1.0 + c) * a0i;
+    monoHighCoeffs.b2 = monoHighCoeffs.b0;
+    monoHighCoeffs.a1 = a1;
+    monoHighCoeffs.a2 = a2;
+
+    lastMonoCoeffFreq = (float)cutoffHz;
+}
 
 bool MidSideVolumeAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
@@ -174,6 +276,11 @@ void MidSideVolumeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     const float panGainR = juce::jlimit(0.0f, 1.0f,
         centreGain * std::pow(juce::MathConstants<float>::sqrt2 * sinPart, panExponent));
 
+    // --- Mono Maker: objetivos de este bloque (el suavizado corre por muestra) ---
+    const float monoFreqTarget = juce::jlimit(monoFreqMin, monoFreqMax, monoFreqParam->load());
+    monoFreqSmoothed.setTargetValue(monoFreqTarget);
+    monoAmountSmoothed.setTargetValue(monoFreqTarget > monoOffThreshold ? 1.0f : 0.0f);
+
     const int numSamples = buffer.getNumSamples();
 
     int gonioWriteIndex = goniometerWriteIndex.load(std::memory_order_relaxed);
@@ -197,13 +304,46 @@ void MidSideVolumeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
         const float decodedL = mid + side;
         const float decodedR = mid - side;
 
-        // Pan y después Output (ruteo: M/S -> Pan -> Output)
-        const float outL = decodedL * panGainL * outputGainLinear;
-        const float outR = decodedR * panGainR * outputGainLinear;
+        // Pan
+        const float pannedL = decodedL * panGainL;
+        const float pannedR = decodedR * panGainR;
+
+        // --- Mono Maker (después del pan, antes del output) ---
+        // Va después del pan a propósito: si fuera antes, el pan volvería a
+        // desbalancear los graves entre L y R.
+        const float monoFreq = monoFreqSmoothed.getNextValue();
+        if ((i & (monoCoeffUpdateInterval - 1)) == 0 && monoFreq != lastMonoCoeffFreq)
+            updateMonoMakerCoefficients(monoFreq);
+
+        const float monoAmount = monoAmountSmoothed.getNextValue();
+
+        // LR4 = 2 biquads en cascada por filtro, por canal
+        const double inL = (double)pannedL;
+        const double inR = (double)pannedR;
+
+        const double lowL = monoLowFilter[0][1].process(monoLowFilter[0][0].process(inL, monoLowCoeffs), monoLowCoeffs);
+        const double lowR = monoLowFilter[1][1].process(monoLowFilter[1][0].process(inR, monoLowCoeffs), monoLowCoeffs);
+
+        const double highL = monoHighFilter[0][1].process(monoHighFilter[0][0].process(inL, monoHighCoeffs), monoHighCoeffs);
+        const double highR = monoHighFilter[1][1].process(monoHighFilter[1][0].process(inR, monoHighCoeffs), monoHighCoeffs);
+
+        // Graves a mono (promedio L/R), agudos conservan su info estéreo
+        const double lowMono = (lowL + lowR) * 0.5;
+        const float monoL = (float)(highL + lowMono);
+        const float monoR = (float)(highR + lowMono);
+
+        // Mezcla seca/procesada (crossfade de 10 ms al prender/apagar)
+        const float mixedL = pannedL * (1.0f - monoAmount) + monoL * monoAmount;
+        const float mixedR = pannedR * (1.0f - monoAmount) + monoR * monoAmount;
+
+        // Output
+        const float outL = mixedL * outputGainLinear;
+        const float outR = mixedR * outputGainLinear;
 
         // El goniómetro muestra lo que realmente sale: re-codificamos la
-        // salida final a M/S, así el vectorscopio refleja también el pan.
-        // Auto-gain y correlación se calculan sobre estos mismos valores.
+        // salida final a M/S, así el vectorscopio refleja también el pan
+        // y el Mono Maker. Auto-gain y correlación se calculan sobre estos
+        // mismos valores.
         const float dispMid = (outL + outR) * 0.5f;
         const float dispSide = (outL - outR) * 0.5f;
 

@@ -41,7 +41,7 @@
  #define JucePlugin_Enable_ARA             0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "MidSideControl"
+ #define JucePlugin_Name                   "MidSideControl_v2"
 #endif
 #ifndef  JucePlugin_Desc
  #define JucePlugin_Desc                   "MidSideControl"
@@ -77,13 +77,13 @@
  #define JucePlugin_EditorRequiresKeyboardFocus  0
 #endif
 #ifndef  JucePlugin_Version
- #define JucePlugin_Version                1.0.0
+ #define JucePlugin_Version                2.0.0
 #endif
 #ifndef  JucePlugin_VersionCode
- #define JucePlugin_VersionCode            0x10000
+ #define JucePlugin_VersionCode            0x20000
 #endif
 #ifndef  JucePlugin_VersionString
- #define JucePlugin_VersionString          "1.0.0"
+ #define JucePlugin_VersionString          "2.0.0"
 #endif
 #ifndef  JucePlugin_VSTUniqueID
  #define JucePlugin_VSTUniqueID            JucePlugin_PluginCode
@@ -140,7 +140,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "ASaudio: MidSideControl"
+ #define JucePlugin_IAAName                "ASaudio: MidSideControl_v2"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16
@@ -158,7 +158,7 @@
  #define JucePlugin_ARAFactoryID           "com.ASaudio.MidSideControl.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.ASaudio.MidSideControl.aradocumentarchive.1.0.0"
+ #define JucePlugin_ARADocumentArchiveID   "com.ASaudio.MidSideControl.aradocumentarchive.2.0.0"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""
