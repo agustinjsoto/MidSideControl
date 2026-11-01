@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="JehWl9" name="MidSideControl" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="ASaudio"
+              pluginVST3Category="Tools" pluginManufacturerCode="ASau" pluginName="MidSideControl"
+              version="2.0.0">
+  <MAINGROUP id="hq1xDV" name="MidSideControl">
+    <GROUP id="{DC6EBBFC-23B9-E544-BE1C-88CFFF3D7F7C}" name="Source">
+      <GROUP id="{57B42116-4948-6C23-DD98-11D2DDC961ED}" name="Resources">
+        <FILE id="ZCJODe" name="BarlowCondensedMedium.ttf" compile="0" resource="1"
+              file="Resources/Fonts/BarlowCondensedMedium.ttf" xcodeResource="1"/>
+        <FILE id="juYvUb" name="BarlowCondensedSemiBold.ttf" compile="0" resource="1"
+              file="Resources/Fonts/BarlowCondensedSemiBold.ttf" xcodeResource="1"/>
+        <FILE id="bZe32e" name="BodoniModaItalicSemiBold.ttf" compile="0" resource="1"
+              file="Resources/Fonts/BodoniModaItalicSemiBold.ttf" xcodeResource="1"/>
+      </GROUP>
+      <GROUP id="{D9782EE4-68CA-B5D3-96F1-AAA2D97CED8E}" name="ASaudio">
+        <FILE id="rBDc17" name="ASaudioLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/ASaudio/ASaudioLookAndFeel.cpp"/>
+        <FILE id="c9Eeos" name="ASaudioLookAndFeel.h" compile="0" resource="0"
+              file="Source/ASaudio/ASaudioLookAndFeel.h"/>
+        <FILE id="XuqLLY" name="BipolarKnob.cpp" compile="1" resource="0" file="Source/ASaudio/BipolarKnob.cpp"/>
+        <FILE id="isZaCi" name="BipolarKnob.h" compile="0" resource="0" file="Source/ASaudio/BipolarKnob.h"/>
+        <FILE id="ot8ydt" name="Checkbox.cpp" compile="1" resource="0" file="Source/ASaudio/Checkbox.cpp"/>
+        <FILE id="NIUU1S" name="Checkbox.h" compile="0" resource="0" file="Source/ASaudio/Checkbox.h"/>
+        <FILE id="XCjRoJ" name="Dropdown.cpp" compile="1" resource="0" file="Source/ASaudio/Dropdown.cpp"/>
+        <FILE id="cpJATL" name="Dropdown.h" compile="0" resource="0" file="Source/ASaudio/Dropdown.h"/>
+        <FILE id="wRYRAW" name="Fader.cpp" compile="1" resource="0" file="Source/ASaudio/Fader.cpp"/>
+        <FILE id="isiTuH" name="Fader.h" compile="0" resource="0" file="Source/ASaudio/Fader.h"/>
+        <FILE id="Ov4Zop" name="GearButton.cpp" compile="1" resource="0" file="Source/ASaudio/GearButton.cpp"/>
+        <FILE id="S8R0CG" name="GearButton.h" compile="0" resource="0" file="Source/ASaudio/GearButton.h"/>
+        <FILE id="sChXLH" name="Goniometer.cpp" compile="1" resource="0" file="Source/ASaudio/Goniometer.cpp"/>
+        <FILE id="YlFXDf" name="Goniometer.h" compile="0" resource="0" file="Source/ASaudio/Goniometer.h"/>
+        <FILE id="Fa7jgF" name="GroupFrame.cpp" compile="1" resource="0" file="Source/ASaudio/GroupFrame.cpp"/>
+        <FILE id="IPEDW0" name="GroupFrame.h" compile="0" resource="0" file="Source/ASaudio/GroupFrame.h"/>
+        <FILE id="PLNgj1" name="Knob.cpp" compile="1" resource="0" file="Source/ASaudio/Knob.cpp"/>
+        <FILE id="DPb7gG" name="Knob.h" compile="0" resource="0" file="Source/ASaudio/Knob.h"/>
+        <FILE id="O7Tidc" name="LedCorrelation.cpp" compile="1" resource="0"
+              file="Source/ASaudio/LedCorrelation.cpp"/>
+        <FILE id="AdWaNH" name="LedCorrelation.h" compile="0" resource="0"
+              file="Source/ASaudio/LedCorrelation.h"/>
+        <FILE id="CIlyJp" name="ParamControl.cpp" compile="1" resource="0"
+              file="Source/ASaudio/ParamControl.cpp"/>
+        <FILE id="xOGdgb" name="ParamControl.h" compile="0" resource="0" file="Source/ASaudio/ParamControl.h"/>
+        <FILE id="xek3Ud" name="Plate.cpp" compile="1" resource="0" file="Source/ASaudio/Plate.cpp"/>
+        <FILE id="Ib3yL8" name="Plate.h" compile="0" resource="0" file="Source/ASaudio/Plate.h"/>
+        <FILE id="UAflhe" name="PushButton.cpp" compile="1" resource="0" file="Source/ASaudio/PushButton.cpp"/>
+        <FILE id="XZ0KKr" name="PushButton.h" compile="0" resource="0" file="Source/ASaudio/PushButton.h"/>
+        <FILE id="bbjw0S" name="SegmentedSelector.cpp" compile="1" resource="0"
+              file="Source/ASaudio/SegmentedSelector.cpp"/>
+        <FILE id="eQPeVy" name="SegmentedSelector.h" compile="0" resource="0"
+              file="Source/ASaudio/SegmentedSelector.h"/>
+        <FILE id="JMCi2t" name="SettingsPanel.cpp" compile="1" resource="0"
+              file="Source/ASaudio/SettingsPanel.cpp"/>
+        <FILE id="ptWHTI" name="SettingsPanel.h" compile="0" resource="0" file="Source/ASaudio/SettingsPanel.h"/>
+        <FILE id="o2N2RS" name="UiSettings.h" compile="0" resource="0" file="Source/ASaudio/UiSettings.h"/>
+        <FILE id="KpOeST" name="ValueBubble.cpp" compile="1" resource="0" file="Source/ASaudio/ValueBubble.cpp"/>
+        <FILE id="SZfCM6" name="ValueBubble.h" compile="0" resource="0" file="Source/ASaudio/ValueBubble.h"/>
+        <FILE id="l12QuY" name="ValueEntry.cpp" compile="1" resource="0" file="Source/ASaudio/ValueEntry.cpp"/>
+        <FILE id="HN5o0l" name="ValueEntry.h" compile="0" resource="0" file="Source/ASaudio/ValueEntry.h"/>
+      </GROUP>
+      <FILE id="kprFLE" name="PluginPanel.cpp" compile="1" resource="0" file="Source/PluginPanel.cpp"/>
+      <FILE id="QFQq9b" name="PluginPanel.h" compile="0" resource="0" file="Source/PluginPanel.h"/>
+      <FILE id="gUiMZa" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="sieuw6" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="jS1kDi" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Swz3RL" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors_headless" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2026 targetFolder="Builds/VisualStudio2026">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="MidSideControl" enablePluginBinaryCopyStep="1"
+                       vst3BinaryLocation_x64="C:\Users\Soto\Documents\Programacion\Reaper Debug\VST3"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="MidSideControl" enablePluginBinaryCopyStep="1"
+                       vst3BinaryLocation_x64="C:\Users\Soto\Documents\Programacion\Desarrollo\Plugins\MidSideControl_v2.0\Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors_headless" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2026>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors_headless" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+</JUCERPROJECT>
